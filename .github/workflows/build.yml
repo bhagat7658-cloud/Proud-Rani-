@@ -15,6 +15,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Extract Proud Rani source
+        run: |
+          mkdir source
+          unzip -o ProudRani_Source_Only.zip -d source
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -27,10 +32,11 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Build APK
+        working-directory: source
         run: gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ProudRani-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: source/app/build/outputs/apk/debug/app-debug.apk
